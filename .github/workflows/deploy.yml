@@ -35,7 +35,7 @@ jobs:
         env:
           NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
           NOTION_DATABASE_ID: "318b5575fd4080028428ff565b9cc698"
-        run: npm run sync-notion
+        run: npm run sync-notion || echo "Notion sync failed; continuing with existing content."
 
       - name: Build
         run: npm run build

@@ -4,8 +4,31 @@
  * Run: node scripts/sync-notion.js
  */
 
-const NOTION_DATABASE_ID = process.env.NOTION_DATABASE_ID || '318b5575fd4080028428ff565b9cc698';
+const NOTION_DATABASE_ID =
+  process.env.NOTION_DATABASE_ID || '318b5575fd4080028428ff565b9cc698';
 const OUTPUT_DIR = new URL('../src/content/blog/', import.meta.url);
+const PLACEHOLDER_FILE = 'welcome.md';
+
+function slugify(value) {
+  return value
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '') || 'untitled';
+}
+
+function getPageTitle(page) {
+  if (!page?.properties || typeof page.properties !== 'object') {
+    return 'Untitled';
+  }
+
+  for (const property of Object.values(page.properties)) {
+    if (property?.type === 'title') {
+      return property.title?.[0]?.plain_text || 'Untitled';
+    }
+  }
+
+  return 'Untitled';
+}
 
 async function main() {
   const apiKey = process.env.NOTION_API_KEY;
@@ -25,7 +48,7 @@ tags: []
 This is a placeholder. Once you configure \`NOTION_API_KEY\` and run \`npm run sync-notion\`, posts from your Notion database will appear here.
 `;
     await fs.promises.mkdir(outDir, { recursive: true });
-    await fs.promises.writeFile(path.join(outDir, 'welcome.md'), content, 'utf8');
+    await fs.promises.writeFile(path.join(outDir, PLACEHOLDER_FILE), content, 'utf8');
     console.log('Wrote placeholder: src/content/blog/welcome.md');
     return;
   }
@@ -45,12 +68,8 @@ This is a placeholder. Once you configure \`NOTION_API_KEY\` and run \`npm run s
 
   for (const page of response.results) {
     if (page.object !== 'page') continue;
-    const titleProp = page.properties?.title || page.properties?.Name;
-    const title = titleProp?.title?.[0]?.plain_text || 'Untitled';
-    const slug = title
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, '-')
-      .replace(/^-|-$/g, '') || 'untitled';
+    const title = getPageTitle(page);
+    const slug = slugify(title);
     const created = page.created_time?.slice(0, 10) || new Date().toISOString().slice(0, 10);
     const updated = page.last_edited_time?.slice(0, 10);
 
