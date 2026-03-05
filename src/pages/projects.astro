@@ -1,0 +1,31 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import projects from '../data/projects.json';
+---
+
+<BaseLayout title="Projects — Yonatan Yagudaev">
+  <section class="hero">
+    <h1>Projects</h1>
+    <p class="lede">A portfolio of what I am actively building and improving.</p>
+  </section>
+
+  <ul class="clean" style="margin-top: 1rem;">
+    {projects.map((project) => (
+      <li class="card">
+        <h2>{project.name}</h2>
+        <p class="muted">{project.summary}</p>
+        <div class="chip-row">
+          <span class="chip">{project.status}</span>
+          {project.stack.map((tech) => (
+            <span class="chip">{tech}</span>
+          ))}
+        </div>
+        <ul>
+          {project.highlights.map((highlight) => (
+            <li>{highlight}</li>
+          ))}
+        </ul>
+      </li>
+    ))}
+  </ul>
+</BaseLayout>

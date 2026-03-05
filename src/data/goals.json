@@ -1,0 +1,20 @@
+[
+  {
+    "title": "Land a Cloud Platform Engineering internship",
+    "horizon": "2026",
+    "status": "in_progress",
+    "why": "Develop production experience in automation, observability, and platform reliability."
+  },
+  {
+    "title": "Master networking foundations (OSI, TCP/UDP, debugging)",
+    "horizon": "Q2 2026",
+    "status": "in_progress",
+    "why": "Strengthen core systems understanding for distributed infrastructure roles."
+  },
+  {
+    "title": "Publish one deep technical research note weekly",
+    "horizon": "Ongoing",
+    "status": "planned",
+    "why": "Build public proof of consistency and technical communication."
+  }
+]

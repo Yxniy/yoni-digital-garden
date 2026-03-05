@@ -1,0 +1,23 @@
+[
+  {
+    "name": "Yoni Digital Garden",
+    "status": "in_progress",
+    "summary": "A living resume and research system powered by Notion, Astro, and GitHub Actions.",
+    "stack": ["Astro", "Notion API", "GitHub Actions", "Node.js"],
+    "highlights": [
+      "Automated content sync from Notion to Markdown",
+      "Static deployment to GitHub Pages",
+      "Structured content model for goals, projects, and learning"
+    ]
+  },
+  {
+    "name": "Pokerly",
+    "status": "active",
+    "summary": "A CS project focused on game logic and software engineering fundamentals.",
+    "stack": ["JavaScript", "Frontend"],
+    "highlights": [
+      "Iterative feature development",
+      "Practical problem-solving and architecture learning"
+    ]
+  }
+]

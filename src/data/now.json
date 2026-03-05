@@ -1,0 +1,12 @@
+{
+  "focus": "Building a living resume + digital garden with automated Notion sync, typed content models, and production-ready deployment workflows.",
+  "thisWeek": [
+    "Map all personal goals into structured Notion databases",
+    "Ship multi-database sync for resume/projects/goals",
+    "Add resume PDF generation pipeline from data"
+  ],
+  "blockers": [
+    "Finalize Notion schema for resume sections",
+    "Decide final LaTeX template and PDF compile strategy"
+  ]
+}

@@ -1,37 +1,36 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import profile from '../data/profile.json';
+import now from '../data/now.json';
+
+const baseUrl = import.meta.env.BASE_URL;
+const root = baseUrl.endsWith('/') ? baseUrl.slice(0, -1) : baseUrl;
+const withBase = (path: string) => `${root}${path}`;
 ---
 
 <BaseLayout title="Yoni's Digital Garden — Living Resume">
-  <header style="padding: 2rem 1.5rem; border-bottom: 1px solid var(--color-border);">
-    <h1 style="margin: 0; font-size: 1.5rem; font-weight: 600;">Yoni's Digital Garden</h1>
-    <p style="margin: 0.5rem 0 0; color: var(--color-text-muted); font-size: 0.95rem;">
-      Living Resume · Cloud-Native · Automated Pipelines
+  <section class="hero">
+    <h1>{profile.name} — {profile.tagline}</h1>
+    <p class="lede">
+      {profile.summary}
     </p>
-  </header>
+  </section>
 
-  <main style="max-width: 720px; margin: 0 auto; padding: 2rem 1.5rem;">
-    <section style="margin-bottom: 2.5rem;">
-      <h2 style="font-size: 1.1rem; color: var(--color-text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 1rem;">
-        Networking Research
-      </h2>
-      <p style="color: var(--color-text-muted); margin: 0;">
-        Deep dives on OSI, TCP/UDP, and networking concepts. Synced from Notion.
-      </p>
-      <a href="/blog" style="display: inline-block; margin-top: 0.75rem;">View all posts →</a>
-    </section>
-
-    <section>
-      <h2 style="font-size: 1.1rem; color: var(--color-text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 1rem;">
-        About
-      </h2>
-      <p style="margin: 0;">
-        This site is built with Astro, synced from a Notion database, and deployed via GitHub Actions to GitHub Pages — a small pipeline demonstrating automated data flow and cloud-native practices.
-      </p>
-    </section>
-  </main>
-
-  <footer style="padding: 1.5rem; border-top: 1px solid var(--color-border); text-align: center; color: var(--color-text-muted); font-size: 0.85rem;">
-    Built with Astro · Notion → Markdown → GitHub Pages
-  </footer>
+  <section class="grid" style="margin-top: 1.5rem;">
+    <article class="card">
+      <h2>Now</h2>
+      <p class="muted">{now.focus}</p>
+      <a href={withBase('/now')}>What I am working on →</a>
+    </article>
+    <article class="card">
+      <h2>Networking Research</h2>
+      <p class="muted">Deep dives synced from Notion (OSI, TCP/UDP, troubleshooting).</p>
+      <a href={withBase('/blog')}>Open research notes →</a>
+    </article>
+    <article class="card">
+      <h2>Resume</h2>
+      <p class="muted">Experience, projects, and an upcoming downloadable PDF flow.</p>
+      <a href={withBase('/resume')}>View resume page →</a>
+    </article>
+  </section>
 </BaseLayout>

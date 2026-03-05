@@ -1,0 +1,35 @@
+{
+  "name": "Yonatan Yagudaev",
+  "title": "Student Engineer | Cloud-Native Systems",
+  "email": "yonatan@example.com",
+  "sections": {
+    "experience": [
+      {
+        "role": "Cloud-Native Portfolio Builder",
+        "company": "Personal Project",
+        "period": "2026 - Present",
+        "bullets": [
+          "Designed an automated Notion-to-Astro content pipeline.",
+          "Implemented CI/CD deployment to GitHub Pages with sync and build stages."
+        ]
+      }
+    ],
+    "projects": [
+      {
+        "name": "Yoni Digital Garden",
+        "bullets": [
+          "Created a living resume architecture with structured content and research publishing.",
+          "Built maintainable scripts to keep public content in sync with source-of-truth data."
+        ]
+      }
+    ],
+    "skills": [
+      "JavaScript/TypeScript",
+      "GitHub Actions",
+      "Notion API",
+      "Astro",
+      "CI/CD",
+      "Networking fundamentals"
+    ]
+  }
+}

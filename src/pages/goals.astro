@@ -1,0 +1,24 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import goals from '../data/goals.json';
+---
+
+<BaseLayout title="Goals — Yonatan Yagudaev">
+  <section class="hero">
+    <h1>Goals Roadmap</h1>
+    <p class="lede">Short, medium, and long-term goals that guide what I build and learn.</p>
+  </section>
+
+  <ul class="clean" style="margin-top: 1rem;">
+    {goals.map((goal) => (
+      <li class="card">
+        <h2>{goal.title}</h2>
+        <p class="muted">Horizon: {goal.horizon}</p>
+        <div class="chip-row">
+          <span class="chip">{goal.status}</span>
+        </div>
+        <p>{goal.why}</p>
+      </li>
+    ))}
+  </ul>
+</BaseLayout>

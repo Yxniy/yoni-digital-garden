@@ -1,0 +1,60 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import resume from '../data/resume.json';
+---
+
+<BaseLayout title="Resume — Yonatan Yagudaev">
+  <section class="hero">
+    <h1>{resume.name}</h1>
+    <p class="lede">{resume.title}</p>
+  </section>
+
+  <section class="card" style="margin-top: 1rem;">
+    <h2>Download</h2>
+    <p class="muted">
+      PDF export pipeline is planned for next phase. This page is already wired to structured data.
+    </p>
+  </section>
+
+  <section style="margin-top: 1rem;">
+    <h2>Experience</h2>
+    <ul class="clean">
+      {resume.sections.experience.map((item) => (
+        <li class="card">
+          <h3>{item.role}</h3>
+          <p class="muted">{item.company} · {item.period}</p>
+          <ul>
+            {item.bullets.map((bullet) => (
+              <li>{bullet}</li>
+            ))}
+          </ul>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <section style="margin-top: 1rem;">
+    <h2>Projects</h2>
+    <ul class="clean">
+      {resume.sections.projects.map((item) => (
+        <li class="card">
+          <h3>{item.name}</h3>
+          <ul>
+            {item.bullets.map((bullet) => (
+              <li>{bullet}</li>
+            ))}
+          </ul>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <section style="margin-top: 1rem;">
+    <h2>Skills</h2>
+    <div class="chip-row">
+      {resume.sections.skills.map((skill) => (
+        <span class="chip">{skill}</span>
+      ))}
+    </div>
+  </section>
+</BaseLayout>

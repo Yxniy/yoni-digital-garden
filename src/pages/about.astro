@@ -1,0 +1,33 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import profile from '../data/profile.json';
+import learning from '../data/learning.json';
+---
+
+<BaseLayout title="About — Yonatan Yagudaev">
+  <section class="hero">
+    <h1>About {profile.name}</h1>
+    <p class="lede">{profile.summary}</p>
+  </section>
+
+  <section class="card" style="margin-top: 1rem;">
+    <h2>Mission</h2>
+    <p>
+      Build cloud-native systems that are reliable, observable, and automated end to end.
+      This site is my public engineering memory and execution log.
+    </p>
+  </section>
+
+  <section style="margin-top: 1rem;">
+    <h2>Learning Focus</h2>
+    <ul class="clean">
+      {learning.map((item) => (
+        <li class="card">
+          <h3>{item.topic}</h3>
+          <p class="muted">Stage: {item.stage}</p>
+          <p>{item.notes}</p>
+        </li>
+      ))}
+    </ul>
+  </section>
+</BaseLayout>

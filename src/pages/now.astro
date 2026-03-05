@@ -1,0 +1,30 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import now from '../data/now.json';
+---
+
+<BaseLayout title="Now — Yonatan Yagudaev">
+  <section class="hero">
+    <h1>Now</h1>
+    <p class="lede">{now.focus}</p>
+  </section>
+
+  <section class="grid" style="margin-top: 1rem;">
+    <article class="card">
+      <h2>This Week</h2>
+      <ul>
+        {now.thisWeek.map((item) => (
+          <li>{item}</li>
+        ))}
+      </ul>
+    </article>
+    <article class="card">
+      <h2>Current Blockers</h2>
+      <ul>
+        {now.blockers.map((item) => (
+          <li>{item}</li>
+        ))}
+      </ul>
+    </article>
+  </section>
+</BaseLayout>

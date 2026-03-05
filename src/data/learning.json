@@ -1,0 +1,14 @@
+[
+  {
+    "topic": "Kubernetes operations",
+    "stage": "planned",
+    "resources": ["Kubernetes docs", "Hands-on labs"],
+    "notes": "Target: deploy and operate containerized services with observability."
+  },
+  {
+    "topic": "Distributed systems reliability",
+    "stage": "in_progress",
+    "resources": ["SRE workbook", "Postmortem analyses"],
+    "notes": "Focus: incident response, alerting design, and system trade-offs."
+  }
+]

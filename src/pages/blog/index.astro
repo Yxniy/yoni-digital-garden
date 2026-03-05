@@ -2,27 +2,28 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 const posts = (await getCollection('blog')).sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+const baseUrl = import.meta.env.BASE_URL;
+const root = baseUrl.endsWith('/') ? baseUrl.slice(0, -1) : baseUrl;
+const withBase = (path: string) => `${root}${path}`;
 ---
 
 <BaseLayout title="Blog — Yoni's Digital Garden" description="Notes and research synced from Notion.">
-  <header style="padding: 2rem 1.5rem; border-bottom: 1px solid var(--color-border);">
-    <a href="/" style="color: var(--color-text-muted); font-size: 0.9rem;">← Back</a>
-    <h1 style="margin: 0.5rem 0 0; font-size: 1.5rem;">Blog</h1>
-  </header>
+  <section class="hero">
+    <h1>Networking Research</h1>
+    <p class="lede">Deep research notes synced from Notion.</p>
+  </section>
 
-  <main style="max-width: 720px; margin: 0 auto; padding: 2rem 1.5rem;">
-    <ul style="list-style: none; padding: 0; margin: 0;">
+  <ul class="clean" style="margin-top: 1rem;">
       {posts.map((post) => (
-        <li style="margin-bottom: 1.25rem;">
-          <a href={`/blog/${post.id}`} style="font-weight: 500;">{post.data.title}</a>
-          <time style="display: block; color: var(--color-text-muted); font-size: 0.85rem;" datetime={post.data.pubDate.toISOString()}>
+        <li class="card">
+          <a href={withBase(`/blog/${post.id}`)} style="font-weight: 500;">{post.data.title}</a>
+          <time class="muted" datetime={post.data.pubDate.toISOString()}>
             {post.data.pubDate.toLocaleDateString('en-CA', { dateStyle: 'medium' })}
           </time>
         </li>
       ))}
-    </ul>
-    {posts.length === 0 && (
-      <p style="color: var(--color-text-muted);">No posts yet. Run the Notion sync to pull content.</p>
-    )}
-  </main>
+  </ul>
+  {posts.length === 0 && (
+    <p class="muted">No posts yet. Run the Notion sync to pull content.</p>
+  )}
 </BaseLayout>

@@ -18,16 +18,26 @@ npm run dev
 ```
 ├── scripts/
 │   └── sync-notion.js    # Fetches Notion DB → Markdown in src/content/blog/
+├── docs/
+│   └── notion-schema.md  # Planned Notion schema for all sections
 ├── src/
 │   ├── content.config.ts # Blog collection (glob loader)
 │   ├── content/
 │   │   └── blog/         # Synced Markdown (from Notion)
+│   ├── data/             # Structured goals/projects/resume/profile data
 │   ├── layouts/
 │   ├── pages/
-│   │   ├── index.astro   # Home + Networking Research section
-│   │   └── blog/         # Blog index + [slug]
+│   │   ├── index.astro   # Home dashboard
+│   │   ├── about.astro
+│   │   ├── resume.astro
+│   │   ├── goals.astro
+│   │   ├── projects.astro
+│   │   ├── now.astro
+│   │   └── blog/         # Research index + [slug]
 │   └── styles/
 │       └── global.css    # Dark, minimal, cloud-native theme
+├── templates/
+│   └── resume.tex        # LaTeX resume starter template
 ├── .github/workflows/
 │   └── deploy.yml        # On push to main: sync Notion → build → GitHub Pages
 ├── astro.config.mjs
@@ -54,3 +64,11 @@ Enable Pages: **Settings → Pages → Source:** GitHub Actions.
 - Dark mode, minimal, “cloud-native” look.
 - Dedicated **Networking Research** section on the homepage (links to blog).
 - Typography: Inter + JetBrains Mono.
+
+## Editing Content Right Now
+
+- `src/data/profile.json` for your top-level identity and links
+- `src/data/resume.json` for resume sections
+- `src/data/projects.json` for project cards
+- `src/data/goals.json` for roadmap goals
+- `src/data/now.json` for live monthly/weekly focus
