@@ -1,0 +1,63 @@
+/* Cloud-Native Digital Garden — minimal, professional, dark mode */
+
+:root {
+  --color-bg: #0f1419;
+  --color-surface: #1a2332;
+  --color-border: #2d3a4f;
+  --color-text: #e6edf3;
+  --color-text-muted: #8b949e;
+  --color-accent: #58a6ff;
+  --color-accent-dim: #388bfd66;
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', ui-monospace, monospace;
+  --radius: 6px;
+  --space: 1rem;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-family: var(--font-sans);
+  color: var(--color-text);
+  background: var(--color-bg);
+  line-height: 1.6;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+}
+
+a {
+  color: var(--color-accent);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+code {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+  background: var(--color-surface);
+  padding: 0.2em 0.4em;
+  border-radius: var(--radius);
+}
+
+pre {
+  background: var(--color-surface);
+  padding: var(--space);
+  border-radius: var(--radius);
+  overflow-x: auto;
+  border: 1px solid var(--color-border);
+}
+
+pre code {
+  background: none;
+  padding: 0;
+}

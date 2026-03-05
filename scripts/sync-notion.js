@@ -1,0 +1,80 @@
+/**
+ * Sync Notion database to src/content/blog/ as Markdown.
+ * Requires NOTION_API_KEY and NOTION_DATABASE_ID (or uses default).
+ * Run: node scripts/sync-notion.js
+ */
+
+const NOTION_DATABASE_ID = process.env.NOTION_DATABASE_ID || '318b5575fd4080028428ff565b9cc698';
+const OUTPUT_DIR = new URL('../src/content/blog/', import.meta.url);
+
+async function main() {
+  const apiKey = process.env.NOTION_API_KEY;
+  const fs = await import('fs');
+  const path = await import('path');
+  const outDir = path.fileURLToPath(OUTPUT_DIR);
+
+  if (!apiKey) {
+    console.warn('NOTION_API_KEY not set. Create a placeholder post only.');
+    const content = `---
+title: Welcome to the Digital Garden
+description: Content is synced from Notion. Set NOTION_API_KEY and run npm run sync-notion.
+pubDate: ${new Date().toISOString().slice(0, 10)}
+tags: []
+---
+
+This is a placeholder. Once you configure \`NOTION_API_KEY\` and run \`npm run sync-notion\`, posts from your Notion database will appear here.
+`;
+    await fs.promises.mkdir(outDir, { recursive: true });
+    await fs.promises.writeFile(path.join(outDir, 'welcome.md'), content, 'utf8');
+    console.log('Wrote placeholder: src/content/blog/welcome.md');
+    return;
+  }
+
+  const { Client } = await import('@notionhq/client');
+  const { NotionToMarkdown } = await import('notion-to-md');
+
+  const notion = new Client({ auth: apiKey });
+  const n2m = new NotionToMarkdown({ notionClient: notion });
+
+  const response = await notion.databases.query({
+    database_id: NOTION_DATABASE_ID,
+    sorts: [{ timestamp: 'last_edited_time', direction: 'descending' }],
+  });
+
+  await fs.promises.mkdir(outDir, { recursive: true });
+
+  for (const page of response.results) {
+    if (page.object !== 'page') continue;
+    const titleProp = page.properties?.title || page.properties?.Name;
+    const title = titleProp?.title?.[0]?.plain_text || 'Untitled';
+    const slug = title
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-|-$/g, '') || 'untitled';
+    const created = page.created_time?.slice(0, 10) || new Date().toISOString().slice(0, 10);
+    const updated = page.last_edited_time?.slice(0, 10);
+
+    const mdBlocks = await n2m.pageToMarkdown(page.id);
+    const result = n2m.toMarkdownString(mdBlocks);
+    const body = typeof result === 'string' ? result : (result?.parent ?? '');
+
+    const frontmatter = `---
+title: ${JSON.stringify(title)}
+pubDate: ${created}
+${updated ? `updatedDate: ${updated}\n` : ''}tags: []
+---
+
+`;
+    const content = frontmatter + body;
+    const filename = `${slug}.md`;
+    await fs.promises.writeFile(path.join(outDir, filename), content, 'utf8');
+    console.log('Synced:', filename);
+  }
+
+  console.log('Sync complete.');
+}
+
+main().catch((err) => {
+  console.error(err);
+  process.exit(1);
+});
