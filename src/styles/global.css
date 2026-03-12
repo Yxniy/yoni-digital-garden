@@ -118,6 +118,10 @@ main.shell {
   margin-bottom: 0.5rem;
 }
 
+.card h2 {
+  font-size: 1.1rem;
+}
+
 .chip-row {
   display: flex;
   gap: 0.4rem;
@@ -144,6 +148,11 @@ ul.clean {
 
 ul.clean li + li {
   margin-top: 0.8rem;
+}
+
+section > h2 {
+  margin: 0;
+  font-size: 1.25rem;
 }
 
 a {

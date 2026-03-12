@@ -11,6 +11,17 @@
     ]
   },
   {
+    "name": "Notion Sync Pipeline",
+    "status": "in_progress",
+    "summary": "A content ingestion pipeline that fetches Notion pages, converts blocks to Markdown, and publishes them through Astro.",
+    "stack": ["Node.js", "Notion API", "notion-to-md", "GitHub Actions"],
+    "highlights": [
+      "Automated page ingestion from Notion database",
+      "Markdown generation with frontmatter for typed collections",
+      "CI integration that keeps content current on deploy"
+    ]
+  },
+  {
     "name": "Pokerly",
     "status": "active",
     "summary": "A CS project focused on game logic and software engineering fundamentals.",

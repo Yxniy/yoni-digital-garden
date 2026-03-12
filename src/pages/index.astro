@@ -2,10 +2,16 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import profile from '../data/profile.json';
 import now from '../data/now.json';
+import projects from '../data/projects.json';
+import syncStatus from '../data/sync-status.json';
+import { getCollection } from 'astro:content';
 
 const baseUrl = import.meta.env.BASE_URL;
 const root = baseUrl.endsWith('/') ? baseUrl.slice(0, -1) : baseUrl;
 const withBase = (path: string) => `${root}${path}`;
+const posts = await getCollection('blog');
+const hasNotionContent = posts.some((post) => post.id !== 'welcome');
+const featuredProjects = projects.slice(0, 3);
 ---
 
 <BaseLayout title="Yoni's Digital Garden — Living Resume">
@@ -13,6 +19,20 @@ const withBase = (path: string) => `${root}${path}`;
     <h1>{profile.name} — {profile.tagline}</h1>
     <p class="lede">
       {profile.summary}
+    </p>
+  </section>
+
+  <section class="card" style="margin-top: 1rem;">
+    <h2>System Status</h2>
+    <div class="chip-row">
+      <span class="chip">posts: {posts.length}</span>
+      <span class="chip">sync source: {syncStatus.source}</span>
+      <span class="chip">last sync: {new Date(syncStatus.lastSyncAt).toLocaleDateString('en-CA', { dateStyle: 'medium' })}</span>
+    </div>
+    <p class="muted" style="margin-top: 0.8rem;">
+      {hasNotionContent
+        ? 'Live Notion content detected. New notes should appear automatically after sync.'
+        : 'Starter mode is active. Add entries in Notion and run sync to replace fallback content.'}
     </p>
   </section>
 
@@ -32,5 +52,23 @@ const withBase = (path: string) => `${root}${path}`;
       <p class="muted">Experience, projects, and an upcoming downloadable PDF flow.</p>
       <a href={withBase('/resume')}>View resume page →</a>
     </article>
+  </section>
+
+  <section style="margin-top: 1.5rem;">
+    <h2>Featured Projects</h2>
+    <ul class="clean" style="margin-top: 0.8rem;">
+      {featuredProjects.map((project) => (
+        <li class="card">
+          <h3>{project.name}</h3>
+          <p class="muted">{project.summary}</p>
+          <div class="chip-row">
+            <span class="chip">{project.status}</span>
+            {project.stack.slice(0, 4).map((tech) => (
+              <span class="chip">{tech}</span>
+            ))}
+          </div>
+        </li>
+      ))}
+    </ul>
   </section>
 </BaseLayout>

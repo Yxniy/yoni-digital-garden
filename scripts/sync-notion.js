@@ -7,6 +7,7 @@
 const NOTION_DATABASE_ID =
   process.env.NOTION_DATABASE_ID || '318b5575fd4080028428ff565b9cc698';
 const OUTPUT_DIR = new URL('../src/content/blog/', import.meta.url);
+const STATUS_FILE = new URL('../src/data/sync-status.json', import.meta.url);
 const PLACEHOLDER_FILE = 'welcome.md';
 
 function slugify(value) {
@@ -35,6 +36,11 @@ async function main() {
   const fs = await import('fs');
   const path = await import('path');
   const outDir = path.fileURLToPath(OUTPUT_DIR);
+  const statusPath = path.fileURLToPath(STATUS_FILE);
+  const writeStatus = async (status) => {
+    await fs.promises.mkdir(path.dirname(statusPath), { recursive: true });
+    await fs.promises.writeFile(statusPath, JSON.stringify(status, null, 2), 'utf8');
+  };
 
   if (!apiKey) {
     console.warn('NOTION_API_KEY not set. Create a placeholder post only.');
@@ -49,6 +55,13 @@ This is a placeholder. Once you configure \`NOTION_API_KEY\` and run \`npm run s
 `;
     await fs.promises.mkdir(outDir, { recursive: true });
     await fs.promises.writeFile(path.join(outDir, PLACEHOLDER_FILE), content, 'utf8');
+    await writeStatus({
+      source: 'local-fallback',
+      syncedCount: 1,
+      lastSyncAt: new Date().toISOString(),
+      databaseId: NOTION_DATABASE_ID,
+      note: 'NOTION_API_KEY is missing, using fallback content.',
+    });
     console.log('Wrote placeholder: src/content/blog/welcome.md');
     return;
   }
@@ -65,6 +78,7 @@ This is a placeholder. Once you configure \`NOTION_API_KEY\` and run \`npm run s
   });
 
   await fs.promises.mkdir(outDir, { recursive: true });
+  let syncedCount = 0;
 
   for (const page of response.results) {
     if (page.object !== 'page') continue;
@@ -87,9 +101,16 @@ ${updated ? `updatedDate: ${updated}\n` : ''}tags: []
     const content = frontmatter + body;
     const filename = `${slug}.md`;
     await fs.promises.writeFile(path.join(outDir, filename), content, 'utf8');
+    syncedCount += 1;
     console.log('Synced:', filename);
   }
 
+  await writeStatus({
+    source: 'notion',
+    syncedCount,
+    lastSyncAt: new Date().toISOString(),
+    databaseId: NOTION_DATABASE_ID,
+  });
   console.log('Sync complete.');
 }
 
